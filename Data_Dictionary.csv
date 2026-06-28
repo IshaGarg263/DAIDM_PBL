@@ -1,0 +1,58 @@
+Column,Category,Data Type,Measurement Scale,How It Was Generated / What It Means
+Respondent_ID,Identifier,Integer,Nominal,"Sequential unique respondent ID, 1 to N."
+True_Segment,Ground-truth label (hidden in real surveys),Categorical,Nominal,The latent persona used to generate this respondent. Kept here for teaching/validation only; should be DROPPED before running an unsupervised clustering exercise so clustering is genuinely blind.
+Employment_Status,Demographic,Categorical,Nominal,Q1. Drawn independently of segment with realistic population proportions.
+Industry_Sector,Demographic,Categorical,Nominal,Q2. Drawn independently of segment.
+Org_Level,Demographic,Categorical,Ordinal,Q3. Probability of seniority increases for AI Champion / Transformation Leader segments.
+Work_Experience_Years,Demographic,Categorical (banded),Ordinal,Q4. Drawn independently of segment.
+Org_Size,Demographic,Categorical (banded),Ordinal,Q5. Drawn independently of segment.
+Age_Band,Demographic,Categorical (banded),Ordinal,Q6. Drawn independently of segment.
+Gender,Demographic,Categorical,Nominal,Q7. Drawn independently of segment.
+Prior_AI_Experience,Behavioural,Categorical (ordered),Ordinal,"Q8. Strongly tied to segment: Champions/Leaders skew toward frequent use, Resisters toward never/rarely."
+Change_Frequency,Behavioural / organisational fact,Categorical (ordered),Ordinal,Q9. Loosely tied to each respondent's Change Fatigue (CFAT) latent score.
+AI_Strategy_Communicated,Behavioural / organisational fact,Categorical,Nominal (implied order),Q10. Tied to a blend of each respondent's Communication (COMM) and Leadership (LEAD) latent scores.
+Training_Received,Behavioural / organisational fact,Categorical,Nominal (implied order),Q11. Tied to each respondent's Training Quality (TRAIN) latent score; also used as a multiplier in the Training_Quality_Score composite.
+AI_Usage_Hours_Monthly,"Behavioural, continuous",Numerical,Ratio,"Q12. Lognormal draw, location parameter set per segment (Champions highest, Resisters lowest). ~0.8% of rows are forced into an extreme 160-220 hour range as deliberate outliers. Right-skewed by construction (skew ~8.5)."
+SEMDIFF_Trust,Semantic differential sub-item,Numerical (1-5),Interval,Q58 pair 1 (Untrustworthy-Trustworthy). Built from a blend of TRUST/PU/PEOU latent scores plus independent noise.
+SEMDIFF_Empower,Semantic differential sub-item,Numerical (1-5),Interval,Q58 pair 2 (Threatening-Empowering). Built from a blend of TRUST/ENG latent scores plus independent noise.
+SEMDIFF_Intuitive,Semantic differential sub-item,Numerical (1-5),Interval,Q58 pair 3 (Confusing-Intuitive). Built from PEOU latent score plus independent noise.
+Rank_Training,Ranking sub-item,Integer (1-5 rank),Ordinal,Q59. Each respondent's segment has a distinct weighting over the 5 factors; ranks derived from segment weight plus small random perturbation.
+Rank_Leadership,Ranking sub-item,Integer (1-5 rank),Ordinal,"Q59, same mechanism as Rank_Training."
+Rank_Evidence,Ranking sub-item,Integer (1-5 rank),Ordinal,"Q59, same mechanism."
+Rank_JobSecurity,Ranking sub-item,Integer (1-5 rank),Ordinal,"Q59, same mechanism. Digital Resisters weight this highest on average."
+Rank_Peer,Ranking sub-item,Integer (1-5 rank),Ordinal,"Q59, same mechanism."
+Scenario_Response,Scenario-based behavioural,Categorical,Nominal,Q60. Segment-specific probability distribution over the 5 reaction options (e.g. Resisters skew heavily toward 'avoid using it').
+Barrier_Category,Thematically pre-coded open response,Categorical,Nominal,"Q63, pre-coded into 7 themes for this synthetic version (a real deployment would code free text post-hoc). Segment-specific probability distribution; used as an association-rule input."
+LEAD_1 / LEAD_2 / LEAD_3,Survey item (Leadership Commitment),Integer (1-5),Ordinal,"Q13-Q15. Each item = LEAD latent score + independent item-level noise, binned to 1-5."
+MGMT_1 / MGMT_2,Survey item (Management Support),Integer (1-5),Ordinal,Q16-Q17. Derived from MGMT latent score.
+CULT_1 / CULT_2 / CULT_3,Survey item (Org. Culture),Integer (1-5),Ordinal,Q18-Q20. Derived from CULT latent score.
+PSAFE_1 / PSAFE_2,Survey item (Psychological Safety),Integer (1-5),Ordinal,Q21-Q22. Derived from PSAFE latent score.
+CFAT_1 / CFAT_2,"Survey item (Change Fatigue, negative pole)",Integer (1-5),Ordinal,Q23-Q24. Derived from CFAT latent score; higher = more fatigue.
+RES_1 / RES_2 / RES_3,"Survey item (Resistance, negative pole)",Integer (1-5),Ordinal,Q25-Q27. Derived from RES latent score; higher = more resistance.
+COMM_1 / COMM_2,Survey item (Communication Effectiveness),Integer (1-5),Ordinal,Q28-Q29. Derived from COMM latent score.
+TRAIN_1 / TRAIN_2 / TRAIN_3,Survey item (Training Quality),Integer (1-5),Ordinal,Q30-Q32. Derived from TRAIN latent score.
+LIT_1 / LIT_2 / LIT_3,Survey item (AI Literacy),Integer (1-5),Ordinal,Q33-Q35. Derived from LIT latent score.
+DLIT_1 / DLIT_2,Survey item (Data Literacy),Integer (1-5),Ordinal,Q36-Q37. Derived from DLIT latent score.
+TRUST_1 / TRUST_2 / TRUST_3,Survey item (AI Trust),Integer (1-5),Ordinal,Q38-Q40. Derived from TRUST latent score. TRUST_3 also feeds the Behavioural Adoption Intent Score.
+ANX_1 / ANX_2,"Survey item (Technology Anxiety, negative pole)",Integer (1-5),Ordinal,Q41-Q42. Derived from ANX latent score; higher = more anxiety.
+PU_1 / PU_2 / PU_3,Survey item (Perceived Usefulness),Integer (1-5),Ordinal,Q43-Q45. Derived from PU latent score.
+PEOU_1 / PEOU_2,Survey item (Perceived Ease of Use),Integer (1-5),Ordinal,Q46-Q47. Derived from PEOU latent score.
+JSEC_1 / JSEC_2,"Survey item (Job Security Concern, negative pole)",Integer (1-5),Ordinal,Q48-Q49. Derived from JSEC latent score; higher = more job-security fear.
+COLLAB_1,Survey item (Cross-functional Collaboration),Integer (1-5),Ordinal,Q50. Derived directly from COLLAB latent score.
+COLLAB_2,"Survey item (Collaboration, reverse-worded)",Integer (1-5),Ordinal,"Q51 ('siloed within IT'). Derived from (100 - COLLAB latent score), i.e. already reverse-coded at generation; no further inversion needed for composite scoring."
+INFRA_1 / INFRA_2,Survey item (Digital Infrastructure Readiness),Integer (1-5),Ordinal,Q52-Q53. Derived from INFRA latent score.
+ENG_1 / ENG_2,Survey item (Employee Engagement),Integer (1-5),Ordinal,Q54-Q55. Derived from ENG latent score.
+DCONF_1 / DCONF_2,Survey item (Digital Confidence),Integer (1-5),Ordinal,Q56-Q57. Derived from DCONF latent score.
+INTENT_1 / INTENT_2,Survey item (Behavioural Adoption Intent),Integer (1-5),Ordinal,"Q61-Q62. NOT derived from a separate latent construct; instead built from a weighted blend of TRUST, PU, ENG (positive) and RES, ANX (negative), reflecting intent as a downstream behavioural consequence."
+Leadership_Readiness_Score,Composite index (0-100),Numerical,Interval,"Mean of LEAD(3) + MGMT(2) + COMM(2) items, rescaled 0-100."
+Training_Quality_Score,Composite index (0-100),Numerical,Interval,"Mean of TRAIN(3) items, rescaled 0-100, weighted by a behavioural multiplier from Training_Received (1.0 structured, 0.7 one-time, 0.4 informal, 0.1 none)."
+AI_Trust_Score,Composite index (0-100),Numerical,Interval,"Mean of TRUST(3) items, rescaled 0-100."
+Resistance_Score,Composite index (0-100),Numerical,Interval,"Mean of RES(3) + JSEC(2) items, rescaled 0-100. Higher = more resistant."
+Change_Fatigue_Score,Composite index (0-100),Numerical,Interval,"Mean of CFAT(2) items, rescaled 0-100. Higher = more fatigued."
+Digital_Confidence_Score,Composite index (0-100),Numerical,Interval,"Mean of DCONF(2) + DLIT(2) items, rescaled 0-100."
+Behavioural_Adoption_Intent_Score,Composite index (0-100),Numerical,Interval,"0.75 x mean(TRUST_3, INTENT_1, INTENT_2 rescaled) + 0.25 x Prior_AI_Experience (rescaled), plus independent composite-level noise. This is the direct input used to derive AI_Adopter_Flag."
+AI_Readiness_Index,Composite index (0-100),Numerical,Interval,"Mean of TRUST(3) + reverse-coded ANX(2) + PU(3) + PEOU(2) items, rescaled 0-100."
+Digital_Maturity_Index,Composite index (0-100),Numerical,Interval,"0.8 x mean(INFRA(2), DCONF(2), DLIT(2) rescaled) + 0.2 x percentile rank of AI_Usage_Hours_Monthly."
+AI_Transformation_Readiness_Score,"REGRESSION TARGET (0-100, continuous)",Numerical,Interval,"Mean of Leadership_Readiness_Score, Employee Readiness sub-score (ENG+INTENT), CULT score, and INFRA score, plus an independent Normal(0, 15) composite-level noise term so the target is not a deterministic function of its visible predictors. This is the primary continuous dependent variable for regression."
+AI_Adopter_Flag,CLASSIFICATION TARGET (binary),Integer (0/1),Nominal,"Derived probabilistically (not a hard median split) from a logistic function of standardised Behavioural_Adoption_Intent_Score plus its own noise term, then a random draw against that probability. This creates a soft, realistic decision boundary: most but not all high-BAIS respondents are coded 1, and most but not all low-BAIS respondents are coded 0."
+Contradictory_Response_Flag,Data-quality marker,Integer (0/1),Nominal,"1 for the 25 respondents (2.08% of the sample) deliberately given internally inconsistent answers (see noise explanation). Provided so the data-cleaning exercise can locate and discuss these rows; would not exist in a real raw survey export and should be dropped or used only for the cleaning write-up, not as a model feature."
